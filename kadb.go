@@ -47,7 +47,9 @@ func (k *Kadb) toDB(msg *sarama.ConsumerMessage) error {
 	if err != nil {
 		return err
 	}
-	k.db.Create(dMsg)
+	if dMsg != nil {
+		k.db.Create(dMsg)
+	}
 	return nil
 }
 
