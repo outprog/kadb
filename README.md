@@ -1,18 +1,11 @@
-package kadb
+# Kadb
 
-import (
-	"encoding/json"
-	"os"
-	"os/signal"
-	"testing"
+kadb is a Kafka exportor. Export kafka topic to DB.
 
-	cluster "github.com/bsm/sarama-cluster"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-)
+## Example
 
-func TestKadb(t *testing.T) {
-	// init consumer
+```
+    // init consumer
 	config := cluster.NewConfig()
 	consumer, err := cluster.NewConsumer([]string{"127.0.0.1:9092"}, "test-group", []string{"test"}, config)
 	if err != nil {
@@ -58,4 +51,4 @@ func TestKadb(t *testing.T) {
 		}, nil
 
 	})
-}
+```
