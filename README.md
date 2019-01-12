@@ -1,6 +1,12 @@
 # Kadb
 
-kadb is a Kafka exportor. Export kafka topic to DB.
+kadb is a Kafka exporter. You can export kafka topic to DB.
+
+## Install
+
+```
+go get -u github.com/outprog/kadb
+```
 
 ## Example
 
@@ -35,7 +41,8 @@ kadb is a Kafka exportor. Export kafka topic to DB.
 	// build kadb, decode topic msg to db
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
-	kdb := New(consumer, db, signals, 3)
+	concurrency_limit := 3
+	kdb := New(consumer, db, signals, concurrency)
 	kdb.Run(func(key, value []byte) (interface{}, error) {
 
 		// unmarshal source from kafka topic
@@ -52,3 +59,10 @@ kadb is a Kafka exportor. Export kafka topic to DB.
 
 	})
 ```
+
+## Dev
+
+```
+dep ensure
+```
+
