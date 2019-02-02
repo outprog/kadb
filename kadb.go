@@ -2,6 +2,7 @@ package kadb
 
 import (
 	"os"
+	"reflect"
 
 	"github.com/Shopify/sarama"
 	cluster "github.com/bsm/sarama-cluster"
@@ -48,7 +49,16 @@ func (k *Kadb) toDB(msg *sarama.ConsumerMessage) error {
 		return err
 	}
 	if dMsg != nil {
-		k.db.Create(dMsg)
+		switch reflect.TypeOf(dMsg).Kind() {
+		case reflect.Slice:
+			va := reflect.ValueOf(dMsg)
+			for i := 0; i < va.Len(); i++ {
+				value := va.Index(i)
+				k.db.Create(value.Interface())
+			}
+		case reflect.Ptr:
+			k.db.Create(dMsg)
+		}
 	}
 	return nil
 }
